@@ -1,52 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recipe_app/Api/api_call.dart';
-import 'package:flutter_recipe_app/model/recipe_model.dart';
-import 'package:http/http.dart'as http;
+import 'package:flutter_recipe_app/screen/recipe_screen.dart';
+
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({ Key? key }) : super(key: key);
+  var search = TextEditingController();
+
+  String name = 'pasta';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Recipe App'),centerTitle: true,backgroundColor: Colors.transparent,),
-      body: FutureBuilder<RecipeModel>(
-        future: ApiCall().fetchData(http.Client(),'mexican'),
-        builder: (context,snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-         else if(snapshot.hasData){
-            return ListView.builder(
-              itemCount: snapshot.data!.hits!.length,
-              itemBuilder: (context, index){
-              var data = snapshot.data!.hits![index]!;
-                var con=data.recipe!.cuisineType.toString();
-                return GestureDetector(
-                  onTap: (){
-                    
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    elevation: 3.0,
-                    color: Colors.blueGrey.shade100,
-                              child: ListTile(
-                  title: Text(data.recipe!.label!),
-                  subtitle: Text(con =='null'? '': con),
-                  leading: ClipRRect(
-                    clipBehavior: Clip.antiAlias,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(data.recipe!.image!),
+      appBar: AppBar(
+        title: Text('Recipe App Home Page'),
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.only(left: 10),
+                margin: EdgeInsets.only(left: 20, top: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 20.0,
+                      color: Color.fromRGBO(100, 100, 100, 0.1),
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 15),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Search',
+                    hintStyle: TextStyle(color: Colors.grey.shade400),
                   ),
-                              ),
-                            ),
-                );
-            });
-          }
-          else throw Exception(snapshot.error);
-      }),
-      backgroundColor: Colors.grey,
+                  onChanged: (val) {
+                    name = val.toString();
+                  },
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecipeScreen(name: name)));
+                  },
+                  icon: Icon(Icons.search),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          
+        ],
+      ),
+      //backgroundColor: Colors.grey,
     );
   }
 }
