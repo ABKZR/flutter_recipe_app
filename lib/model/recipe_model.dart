@@ -97,29 +97,6 @@ class RecipeModelHitsRecipeDigestSub {
 }
 
 class RecipeModelHitsRecipeDigest {
-/*
-{
-  "label": "Fat",
-  "tag": "FAT",
-  "schemaOrgTag": "fatContent",
-  "total": 274.4489059026023,
-  "hasRDI": true,
-  "daily": 422.2290860040035,
-  "unit": "g",
-  "sub": [
-    {
-      "label": "Saturated",
-      "tag": "FASAT",
-      "schemaOrgTag": "saturatedFatContent",
-      "total": 62.497618998656044,
-      "hasRDI": true,
-      "daily": 312.48809499328024,
-      "unit": "g"
-    }
-  ]
-} 
-*/
-
   String? label;
   String? tag;
   String? schemaOrgTag;
@@ -2389,6 +2366,8 @@ class RecipeModelHitsRecipeTotalNutrients {
     VITK1 = (json["VITK1"] != null) ? RecipeModelHitsRecipeTotalNutrientsVITK1.fromJson(json["VITK1"]) : null;
     WATER = (json["WATER"] != null) ? RecipeModelHitsRecipeTotalNutrientsWATER.fromJson(json["WATER"]) : null;
   }
+
+  get lst => null;
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     if (ENERCKCAL != null) {
