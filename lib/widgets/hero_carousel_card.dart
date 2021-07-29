@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/carousel_data.dart';
 import 'package:flutter_recipe_app/screen/recipe_screen.dart';
 
@@ -8,8 +9,11 @@ class HeroCarouselCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>RecipeScreen(name: cuisine!.title)));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RecipeScreen(name: cuisine!.title)));
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
@@ -39,11 +43,13 @@ class HeroCarouselCard extends StatelessWidget {
                     ),
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: Text(cuisine!.title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Colors.white)),
+                    child: Text(
+                      cuisine!.title,
+                      style: kTextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ),
               ],

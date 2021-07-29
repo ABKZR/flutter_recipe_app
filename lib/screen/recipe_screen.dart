@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_recipe_app/Api/api_call.dart';
+import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/recipe_model.dart';
 import 'package:flutter_recipe_app/screen/recipe_detail_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -12,7 +13,16 @@ class RecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipe $name'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_outlined),
+          onPressed: (){
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          'Recipes...',
+          style: kTextStyle(),
+        ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -79,9 +89,9 @@ class RecipeScreen extends StatelessWidget {
                                     snapshot.data!.hits![index]!.recipe!.label!,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
+                                    style: kTextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   )))
                         ],

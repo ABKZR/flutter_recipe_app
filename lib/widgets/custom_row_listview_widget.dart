@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_app/constant.dart';
 
+// ignore: must_be_immutable
 class CustomRowListview extends StatelessWidget {
   CustomRowListview(
       {Key? key,
@@ -20,7 +22,7 @@ class CustomRowListview extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: kTextStyle(fontWeight: FontWeight.bold,fontSize: 20),
           ),
           SizedBox(width: 10),
           Expanded(
@@ -41,7 +43,7 @@ class CustomRowListview extends StatelessWidget {
                           ),
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10)),
-                      child: Text(lst[ind]!));
+                      child: Text(lst[ind]!,style: kTextStyle(),));
                 }),
           ),
         ],

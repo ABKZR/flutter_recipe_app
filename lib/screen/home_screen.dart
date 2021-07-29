@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/carousel_data.dart';
 import 'package:flutter_recipe_app/screen/recipe_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_recipe_app/widgets/hero_carousel_card.dart';
 
+// ignore: must_be_immutable
 class HomeScreen extends StatelessWidget {
   var search = TextEditingController();
   String name = 'biryani';
@@ -12,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Page'),
+        title: Text('Home Page',style: kTextStyle(),),
         centerTitle: true,
         backgroundColor: Colors.transparent,
       ),
@@ -85,8 +87,8 @@ class HomeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'Regions',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                'Regions...',
+                style:kTextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
             Container(
@@ -106,8 +108,8 @@ class HomeScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text('Category',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              child: Text('Category...',
+                  style: kTextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
             Container(
                 child: CarouselSlider(

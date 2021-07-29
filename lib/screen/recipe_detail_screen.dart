@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/recipe_model.dart';
 import 'package:flutter_recipe_app/widgets/custom_row_listview_widget.dart';
+import 'package:flutter_recipe_app/widgets/nutrients_reuseable_column.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RecipeDetails extends StatelessWidget {
   RecipeDetails({Key? key, required this.recipe, required this.index})
       : super(key: key);
   final RecipeModel recipe;
   final int index;
-  List<String> lst = ['Fat', 'Carbs', 'Protein'];
 
   @override
   Widget build(BuildContext context) {
@@ -16,169 +18,322 @@ class RecipeDetails extends StatelessWidget {
     var nutData = recipe.hits![index]!.recipe!.totalNutrients!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(recipe.hits![index]!.recipe!.label!),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                  margin: EdgeInsets.all(10),
-                  height: 200,
-                  width: double.infinity,
-                  child: Image.network(recipe.hits![index]!.recipe!.image!,
-                      fit: BoxFit.cover)),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          SliverAppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_new_outlined),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            Row(
-              children: [
-                Text(
-                  'Ingredients:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: num,
-                        itemBuilder: (context, ind) {
-                          return Text(recipe
-                              .hits![index]!.recipe!.ingredientLines![ind]!);
-                        })),
-              ],
-            ),
-            Divider(),
-            CustomRowListview(
-                title: 'Dish:', lst: recipe.hits![index]!.recipe!.dishType!),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Calories per serving:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(width: 10),
-                Text(recipe.hits![index]!.recipe!.calories!.toStringAsFixed(1)),
-              ],
-            ),
-            Divider(),
-            CustomRowListview(
-                title: 'Cuisine:',
-                lst: recipe.hits![index]!.recipe!.cuisineType!),
-            Divider(),
-            CustomRowListview(
-                title: 'Meal:', lst: recipe.hits![index]!.recipe!.mealType!),
-            Divider(),
-            Container(
-              height: 35,
-              child: ListView(
-                
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: [
-                 Row(
-                   children: [
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(
-                       title: 'Fat',
-                       val: recipe.hits![index]!.recipe!.totalNutrients!.FAT!,
-                     ),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Sugar', val: nutData.SUGAR!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'VITB12', val: nutData.VITB12!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Fiber', val: nutData.FIBTG!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Iron', val: nutData.FE!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Carbs', val: nutData.CHOCDF!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Cholesterol', val: nutData.CHOLE!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Phosphorus', val: nutData.P!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                     CustomColumn(title: 'Calcium', val: nutData.CA!),
-                     SizedBox(
-                       width: 10,
-                     ),
-                   ],
-                 )],
+            expandedHeight: 300,
+            stretch: true,
+            stretchTriggerOffset: 200,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                recipe.hits![index]!.recipe!.label!,
+                style: GoogleFonts.inconsolata(fontWeight: FontWeight.w600),
               ),
+              centerTitle: true,
+              stretchModes: const [
+                StretchMode.zoomBackground,
+                StretchMode.fadeTitle,
+                // StretchMode.blurBackground,
+              ],
+              background: Stack(fit: StackFit.expand, children: [
+                Image.network(
+                  recipe.hits![index]!.recipe!.image!,
+                  fit: BoxFit.cover,
+                ),
+                const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment(0.0, 0.8),
+                      end: Alignment(0.0, 0.0),
+                      colors: <Color>[
+                        Color(0x60000000),
+                        Color(0x00000000),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
             ),
-               
-            
-            Divider(),
-            CustomRowListview(
-                title: 'Health:',
-                lst: recipe.hits![index]!.recipe!.healthLabels!),
-            Divider(),
-            CustomRowListview(
-              lst: recipe.hits![index]!.recipe!.dietLabels!,
-              title: 'Diets:',
-            ),
-          ],
-        ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Ingredients:',
+                        style: kTextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: num,
+                              itemBuilder: (context, ind) {
+                                return Text(
+                                  recipe.hits![index]!.recipe!
+                                      .ingredientLines![ind]!,
+                                  style: kTextStyle(),
+                                );
+                              })),
+                    ],
+                  ),
+                  Divider(),
+                  CustomRowListview(
+                      title: 'Dish:',
+                      lst: recipe.hits![index]!.recipe!.dishType!),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Calories:',
+                        style: kTextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        recipe.hits![index]!.recipe!.calories!
+                            .toStringAsFixed(1),
+                        style: kTextStyle(),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  CustomRowListview(
+                      title: 'Cuisine:',
+                      lst: recipe.hits![index]!.recipe!.cuisineType!),
+                  Divider(),
+                  CustomRowListview(
+                    title: 'Meal:',
+                    lst: recipe.hits![index]!.recipe!.mealType!,
+                  ),
+                  Divider(),
+                  Container(
+                    height: 40,
+                    child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Nutrients:',
+                              style: kTextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(
+                              title: 'Fat',
+                              val: recipe
+                                  .hits![index]!.recipe!.totalNutrients!.FAT!,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Sugar', val: nutData.SUGAR!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'VITB12', val: nutData.VITB12!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Fiber', val: nutData.FIBTG!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Iron', val: nutData.FE!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Carbs', val: nutData.CHOCDF!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(
+                                title: 'Cholesterol', val: nutData.CHOLE!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Phosphorus', val: nutData.P!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            CustomColumn(title: 'Calcium', val: nutData.CA!),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  CustomRowListview(
+                      title: 'Health:',
+                      lst: recipe.hits![index]!.recipe!.healthLabels!),
+                  Divider(),
+                  CustomRowListview(
+                    lst: recipe.hits![index]!.recipe!.dietLabels!,
+                    title: 'Diets:',
+                  ),
+                ],
+              ),
+            ]),
+          )
+        ],
       ),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class CustomColumn extends StatelessWidget {
-  CustomColumn({
-    Key? key,
-    required this.title,
-    required this.val,
-  }) : super(key: key);
-
-  // final RecipeModel recipe;
-  // final int index;
-  var val;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        SizedBox(width: 10),
-        Row(
-          children: [
-            //recipe.hits![index]!.recipe!.totalNutrients!.FAT!
-            Text(val.quantity!.toStringAsFixed(1)),
-            Text(val.unit!),
-          ],
-        ),
-      ],
+      //  SingleChildScrollView(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.start,
+      //     children: [
+      //       Align(
+      //         alignment: Alignment.center,
+      //         child: Container(
+      //             margin: EdgeInsets.only(bottom: 15),
+      //             height: 200,
+      //             width: double.infinity,
+      //             child: Image.network(recipe.hits![index]!.recipe!.image!,
+      //                 fit: BoxFit.cover)),
+      //       ),
+      //       Row(
+      //         children: [
+      //           Text(
+      //             'Ingredients:',
+      //             style: kTextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      //           ),
+      //           SizedBox(
+      //             width: 10,
+      //           ),
+      //           Expanded(
+      //               child: ListView.builder(
+      //                   physics: NeverScrollableScrollPhysics(),
+      //                   shrinkWrap: true,
+      //                   itemCount: num,
+      //                   itemBuilder: (context, ind) {
+      //                     return Text(
+      //                       recipe.hits![index]!.recipe!.ingredientLines![ind]!,
+      //                       style: kTextStyle(),
+      //                     );
+      //                   })),
+      //         ],
+      //       ),
+      //       Divider(),
+      //       CustomRowListview(
+      //           title: 'Dish:', lst: recipe.hits![index]!.recipe!.dishType!),
+      //       Divider(),
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.start,
+      //         children: [
+      //           Text(
+      //             'Calories:',
+      //             style: kTextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      //           ),
+      //           SizedBox(width: 10),
+      //           Text(
+      //             recipe.hits![index]!.recipe!.calories!.toStringAsFixed(1),
+      //             style: kTextStyle(),
+      //           ),
+      //         ],
+      //       ),
+      //       Divider(),
+      //       CustomRowListview(
+      //           title: 'Cuisine:',
+      //           lst: recipe.hits![index]!.recipe!.cuisineType!),
+      //       Divider(),
+      //       CustomRowListview(
+      //         title: 'Meal:',
+      //         lst: recipe.hits![index]!.recipe!.mealType!,
+      //       ),
+      //       Divider(),
+      //       Container(
+      //         height: 40,
+      //         child: ListView(
+      //           shrinkWrap: true,
+      //           scrollDirection: Axis.horizontal,
+      //           children: [
+      //             Row(
+      //               children: [
+      //                 Text(
+      //                   'Nutrients:',
+      //                   style: kTextStyle(
+      //                       fontSize: 20, fontWeight: FontWeight.bold),
+      //                 ),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(
+      //                   title: 'Fat',
+      //                   val: recipe.hits![index]!.recipe!.totalNutrients!.FAT!,
+      //                 ),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Sugar', val: nutData.SUGAR!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'VITB12', val: nutData.VITB12!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Fiber', val: nutData.FIBTG!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Iron', val: nutData.FE!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Carbs', val: nutData.CHOCDF!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Cholesterol', val: nutData.CHOLE!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Phosphorus', val: nutData.P!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //                 CustomColumn(title: 'Calcium', val: nutData.CA!),
+      //                 SizedBox(
+      //                   width: 10,
+      //                 ),
+      //               ],
+      //             )
+      //           ],
+      //         ),
+      //       ),
+      //       Divider(),
+      //       CustomRowListview(
+      //           title: 'Health:',
+      //           lst: recipe.hits![index]!.recipe!.healthLabels!),
+      //       Divider(),
+      //       CustomRowListview(
+      //         lst: recipe.hits![index]!.recipe!.dietLabels!,
+      //         title: 'Diets:',
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
