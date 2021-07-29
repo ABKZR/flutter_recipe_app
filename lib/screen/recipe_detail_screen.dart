@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_recipe_app/model/recipe_model.dart';
+import 'package:flutter_recipe_app/widgets/custom_row_listview_widget.dart';
 
 class RecipeDetails extends StatelessWidget {
   RecipeDetails({Key? key, required this.recipe, required this.index})
       : super(key: key);
   final RecipeModel recipe;
   final int index;
-List<String> lst =['Fat','Carbs','Protein'];
+  List<String> lst = ['Fat', 'Carbs', 'Protein'];
+
   @override
   Widget build(BuildContext context) {
     int num = recipe.hits![index]!.recipe!.ingredientLines!.length;
+    var nutData = recipe.hits![index]!.recipe!.totalNutrients!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(recipe.hits![index]!.recipe!.label!),
@@ -30,7 +34,6 @@ List<String> lst =['Fat','Carbs','Protein'];
                   child: Image.network(recipe.hits![index]!.recipe!.image!,
                       fit: BoxFit.cover)),
             ),
-
             Row(
               children: [
                 Text(
@@ -51,9 +54,9 @@ List<String> lst =['Fat','Carbs','Protein'];
                         })),
               ],
             ),
-            
             Divider(),
-            CustomRowListview(title: 'Dish:', lst:recipe.hits![index]!.recipe!.dishType! ),
+            CustomRowListview(
+                title: 'Dish:', lst: recipe.hits![index]!.recipe!.dishType!),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -67,35 +70,79 @@ List<String> lst =['Fat','Carbs','Protein'];
               ],
             ),
             Divider(),
-            CustomRowListview(title: 'Cuisine:', lst: recipe.hits![index]!.recipe!.cuisineType!),
+            CustomRowListview(
+                title: 'Cuisine:',
+                lst: recipe.hits![index]!.recipe!.cuisineType!),
             Divider(),
-            CustomRowListview(title: 'Meal:', lst: recipe.hits![index]!.recipe!.mealType!),
+            CustomRowListview(
+                title: 'Meal:', lst: recipe.hits![index]!.recipe!.mealType!),
             Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'FAT:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(width: 10),
-                Row(
-                  children: [
-                    Text(recipe
-                        .hits![index]!.recipe!.totalNutrients!.FAT!.quantity!
-                        .toStringAsFixed(1)),
-                    Text(recipe
-                        .hits![index]!.recipe!.totalNutrients!.FAT!.unit!),
-                    // TODO digest List Then List View
-                  ],
-                ),
-              ],
+            Container(
+              height: 35,
+              child: ListView(
+                
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: [
+                 Row(
+                   children: [
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(
+                       title: 'Fat',
+                       val: recipe.hits![index]!.recipe!.totalNutrients!.FAT!,
+                     ),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Sugar', val: nutData.SUGAR!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'VITB12', val: nutData.VITB12!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Fiber', val: nutData.FIBTG!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Iron', val: nutData.FE!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Carbs', val: nutData.CHOCDF!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Cholesterol', val: nutData.CHOLE!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Phosphorus', val: nutData.P!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                     CustomColumn(title: 'Calcium', val: nutData.CA!),
+                     SizedBox(
+                       width: 10,
+                     ),
+                   ],
+                 )],
+              ),
             ),
-            //Todo Covert all list into list View
+               
+            
             Divider(),
-            CustomRowListview(title: 'Health', lst:recipe.hits![index]!.recipe!.healthLabels! ),
+            CustomRowListview(
+                title: 'Health:',
+                lst: recipe.hits![index]!.recipe!.healthLabels!),
             Divider(),
-            CustomRowListview(lst: recipe.hits![index]!.recipe!.dietLabels!,title: 'Diets:',),
+            CustomRowListview(
+              lst: recipe.hits![index]!.recipe!.dietLabels!,
+              title: 'Diets:',
+            ),
           ],
         ),
       ),
@@ -103,46 +150,35 @@ List<String> lst =['Fat','Carbs','Protein'];
   }
 }
 
-class CustomRowListview extends StatelessWidget {
-   CustomRowListview({
+// ignore: must_be_immutable
+class CustomColumn extends StatelessWidget {
+  CustomColumn({
     Key? key,
-    // required this.recipe,
-    // required this.index,
-   required this.title,
-   required this.lst,
-   this.direction= Axis.horizontal
+    required this.title,
+    required this.val,
   }) : super(key: key);
 
   // final RecipeModel recipe;
   // final int index;
+  var val;
   final String title;
-  final List lst;
-  var direction ;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 20,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-              child:ListView.builder(
-                //recipe.hits![index]!.recipe!.dietLabels!.length
-                scrollDirection: direction,
-                shrinkWrap: true,
-                itemCount: lst.length,
-                itemBuilder: (context, ind){
-              return Text(lst[ind]! +".  ");
-              }),
-              
-               ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        SizedBox(width: 10),
+        Row(
+          children: [
+            //recipe.hits![index]!.recipe!.totalNutrients!.FAT!
+            Text(val.quantity!.toStringAsFixed(1)),
+            Text(val.unit!),
+          ],
+        ),
+      ],
     );
   }
 }

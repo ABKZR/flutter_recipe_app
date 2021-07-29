@@ -67,7 +67,6 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          
         ],
       ),
       //backgroundColor: Colors.grey,
