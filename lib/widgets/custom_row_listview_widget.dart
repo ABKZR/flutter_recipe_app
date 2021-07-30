@@ -16,13 +16,13 @@ class CustomRowListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 20,
+      height: 25,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             title,
-            style: kTextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+            style: kTextStyleRecipeDetails.copyWith(fontWeight: FontWeight.bold,fontSize: 20),
           ),
           SizedBox(width: 10),
           Expanded(
@@ -33,7 +33,7 @@ class CustomRowListview extends StatelessWidget {
                 itemBuilder: (context, ind) {
                   return Container(
                       margin: EdgeInsets.only(left: 5),
-                      padding: EdgeInsets.only(left: 5, right: 5),
+                      padding: EdgeInsets.only(left: 5,top: 1,bottom: 1, right: 5),
                       decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(color: Colors.black26),
@@ -41,9 +41,8 @@ class CustomRowListview extends StatelessWidget {
                             right: BorderSide(color: Colors.black26),
                             top: BorderSide(color: Colors.black26),
                           ),
-                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(10)),
-                      child: Text(lst[ind]!,style: kTextStyle(),));
+                      child: Text(lst[ind]!,style: kTextStyleRecipeDetails,));
                 }),
           ),
         ],

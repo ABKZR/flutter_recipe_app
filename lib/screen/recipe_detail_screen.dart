@@ -18,12 +18,13 @@ class RecipeDetails extends StatelessWidget {
     var nutData = recipe.hits![index]!.recipe!.totalNutrients!;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_outlined),
+              icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -34,13 +35,12 @@ class RecipeDetails extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 recipe.hits![index]!.recipe!.label!,
-                style: GoogleFonts.inconsolata(fontWeight: FontWeight.w600),
+                style: kTextStyle(fontWeight: FontWeight.w600,color: Colors.white),
               ),
               centerTitle: true,
               stretchModes: const [
                 StretchMode.zoomBackground,
                 StretchMode.fadeTitle,
-                // StretchMode.blurBackground,
               ],
               background: Stack(fit: StackFit.expand, children: [
                 Image.network(
@@ -71,8 +71,7 @@ class RecipeDetails extends StatelessWidget {
                     children: [
                       Text(
                         'Ingredients:',
-                        style: kTextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                        style: kTextStyleRecipeDetails.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       SizedBox(
                         width: 10,
@@ -86,44 +85,31 @@ class RecipeDetails extends StatelessWidget {
                                 return Text(
                                   recipe.hits![index]!.recipe!
                                       .ingredientLines![ind]!,
-                                  style: kTextStyle(),
+                                  style: kTextStyleRecipeDetails,
                                 );
                               })),
                     ],
                   ),
-                  Divider(),
-                  CustomRowListview(
-                      title: 'Dish:',
-                      lst: recipe.hits![index]!.recipe!.dishType!),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         'Calories:',
-                        style: kTextStyle(
+                        style: kTextStyleRecipeDetails.copyWith(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       SizedBox(width: 10),
                       Text(
                         recipe.hits![index]!.recipe!.calories!
                             .toStringAsFixed(1),
-                        style: kTextStyle(),
+                        style: kTextStyleRecipeDetails,
                       ),
                     ],
                   ),
                   Divider(),
-                  CustomRowListview(
-                      title: 'Cuisine:',
-                      lst: recipe.hits![index]!.recipe!.cuisineType!),
-                  Divider(),
-                  CustomRowListview(
-                    title: 'Meal:',
-                    lst: recipe.hits![index]!.recipe!.mealType!,
-                  ),
-                  Divider(),
                   Container(
-                    height: 40,
+                    height: 42,
                     child: ListView(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
@@ -132,7 +118,7 @@ class RecipeDetails extends StatelessWidget {
                           children: [
                             Text(
                               'Nutrients:',
-                              style: kTextStyle(
+                              style: kTextStyleRecipeDetails.copyWith(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
@@ -199,141 +185,6 @@ class RecipeDetails extends StatelessWidget {
           )
         ],
       ),
-      //  SingleChildScrollView(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //     children: [
-      //       Align(
-      //         alignment: Alignment.center,
-      //         child: Container(
-      //             margin: EdgeInsets.only(bottom: 15),
-      //             height: 200,
-      //             width: double.infinity,
-      //             child: Image.network(recipe.hits![index]!.recipe!.image!,
-      //                 fit: BoxFit.cover)),
-      //       ),
-      //       Row(
-      //         children: [
-      //           Text(
-      //             'Ingredients:',
-      //             style: kTextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      //           ),
-      //           SizedBox(
-      //             width: 10,
-      //           ),
-      //           Expanded(
-      //               child: ListView.builder(
-      //                   physics: NeverScrollableScrollPhysics(),
-      //                   shrinkWrap: true,
-      //                   itemCount: num,
-      //                   itemBuilder: (context, ind) {
-      //                     return Text(
-      //                       recipe.hits![index]!.recipe!.ingredientLines![ind]!,
-      //                       style: kTextStyle(),
-      //                     );
-      //                   })),
-      //         ],
-      //       ),
-      //       Divider(),
-      //       CustomRowListview(
-      //           title: 'Dish:', lst: recipe.hits![index]!.recipe!.dishType!),
-      //       Divider(),
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.start,
-      //         children: [
-      //           Text(
-      //             'Calories:',
-      //             style: kTextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      //           ),
-      //           SizedBox(width: 10),
-      //           Text(
-      //             recipe.hits![index]!.recipe!.calories!.toStringAsFixed(1),
-      //             style: kTextStyle(),
-      //           ),
-      //         ],
-      //       ),
-      //       Divider(),
-      //       CustomRowListview(
-      //           title: 'Cuisine:',
-      //           lst: recipe.hits![index]!.recipe!.cuisineType!),
-      //       Divider(),
-      //       CustomRowListview(
-      //         title: 'Meal:',
-      //         lst: recipe.hits![index]!.recipe!.mealType!,
-      //       ),
-      //       Divider(),
-      //       Container(
-      //         height: 40,
-      //         child: ListView(
-      //           shrinkWrap: true,
-      //           scrollDirection: Axis.horizontal,
-      //           children: [
-      //             Row(
-      //               children: [
-      //                 Text(
-      //                   'Nutrients:',
-      //                   style: kTextStyle(
-      //                       fontSize: 20, fontWeight: FontWeight.bold),
-      //                 ),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(
-      //                   title: 'Fat',
-      //                   val: recipe.hits![index]!.recipe!.totalNutrients!.FAT!,
-      //                 ),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Sugar', val: nutData.SUGAR!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'VITB12', val: nutData.VITB12!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Fiber', val: nutData.FIBTG!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Iron', val: nutData.FE!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Carbs', val: nutData.CHOCDF!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Cholesterol', val: nutData.CHOLE!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Phosphorus', val: nutData.P!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //                 CustomColumn(title: 'Calcium', val: nutData.CA!),
-      //                 SizedBox(
-      //                   width: 10,
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //       Divider(),
-      //       CustomRowListview(
-      //           title: 'Health:',
-      //           lst: recipe.hits![index]!.recipe!.healthLabels!),
-      //       Divider(),
-      //       CustomRowListview(
-      //         lst: recipe.hits![index]!.recipe!.dietLabels!,
-      //         title: 'Diets:',
-      //       ),
-      //     ],
-      //   ),
-      // ),
-    );
+          );
   }
 }

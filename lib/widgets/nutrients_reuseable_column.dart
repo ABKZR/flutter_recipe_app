@@ -18,18 +18,18 @@ class CustomColumn extends StatelessWidget {
       children: [
         Text(
           title,
-          style: kTextStyle(fontWeight: FontWeight.bold),
+          style: kTextStyleRecipeDetails.copyWith(fontWeight: FontWeight.w400,fontSize: 15),
         ),
         SizedBox(width: 10),
         Row(
           children: [
             Text(
               val.quantity!.toStringAsFixed(1),
-              style: kTextStyle(),
+              style: kTextStyleRecipeDetails.copyWith(fontSize: 13),
             ),
             Text(
               val.unit!,
-              style: kTextStyle(),
+              style: kTextStyleRecipeDetails,
             ),
           ],
         ),

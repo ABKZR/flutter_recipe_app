@@ -12,19 +12,20 @@ class RecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_outlined),
+          icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,),
           onPressed: (){
             Navigator.pop(context);
           },
         ),
         title: Text(
           'Recipes...',
-          style: kTextStyle(),
+          style: kTextStyle(color: Colors.white,fontSize:20),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
       ),
       body: FutureBuilder<RecipeModel>(
           future: ApiCall().fetchData(http.Client(), recipe: name),
@@ -32,7 +33,7 @@ class RecipeScreen extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: SpinKitWave(
-                  color: Colors.grey,
+                  color: Colors.white,
                   size: 50,
                 ),
               );
@@ -91,7 +92,7 @@ class RecipeScreen extends StatelessWidget {
                                     maxLines: 1,
                                     style: kTextStyle(
                                         color: Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.bold),
                                   )))
                         ],
