@@ -4,18 +4,26 @@ import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/recipe_model.dart';
 import 'package:flutter_recipe_app/widgets/custom_row_listview_widget.dart';
 import 'package:flutter_recipe_app/widgets/nutrients_reuseable_column.dart';
+import 'package:simple_url_preview/simple_url_preview.dart';
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecipeDetails extends StatelessWidget {
   RecipeDetails({Key? key, required this.recipe, required this.index})
       : super(key: key);
   final RecipeModel recipe;
   final int index;
-
   @override
   Widget build(BuildContext context) {
     int num = recipe.hits![index]!.recipe!.ingredientLines!.length;
     var nutData = recipe.hits![index]!.recipe!.totalNutrients!;
-
+var _url = recipe.hits![index]!.recipe!.url!; 
+//  void _launchURL() async {
+//     await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+//     // ignore: unused_label
+//     target: LinkTarget.self;
+    
+//     }
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: CustomScrollView(
@@ -23,7 +31,10 @@ class RecipeDetails extends StatelessWidget {
         slivers: [
           SliverAppBar(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,),
+              icon: Icon(
+                Icons.arrow_back_ios_new_outlined,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -34,7 +45,8 @@ class RecipeDetails extends StatelessWidget {
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 recipe.hits![index]!.recipe!.label!,
-                style: kTextStyle(fontWeight: FontWeight.w600,color: Colors.white),
+                style: kTextStyle(
+                    fontWeight: FontWeight.w600, color: Colors.white),
               ),
               centerTitle: true,
               stretchModes: const [
@@ -70,7 +82,8 @@ class RecipeDetails extends StatelessWidget {
                     children: [
                       Text(
                         'Ingredients:',
-                        style: kTextStyleRecipeDetails.copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+                        style: kTextStyleRecipeDetails.copyWith(
+                            fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       SizedBox(
                         width: 10,
@@ -178,12 +191,42 @@ class RecipeDetails extends StatelessWidget {
                     lst: recipe.hits![index]!.recipe!.dietLabels!,
                     title: 'Diets:',
                   ),
+                  Link(
+                    uri: Uri.parse(_url),
+                     target: LinkTarget.self,
+                    builder: (context,followLink){
+                      return SimpleUrlPreview(
+                      url: Uri.decodeFull(recipe.hits![index]!.recipe!.url!) ,
+                      previewHeight: 200,
+                       onTap:  followLink,
+                      previewContainerPadding: EdgeInsets.all(10),
+                      bgColor: Colors.white,
+                      titleStyle: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor.withOpacity(1),
+                      ),
+                      descriptionStyle: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      siteNameStyle: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    );
+                    },
+                    
+                  ),
                 ],
               ),
             ]),
           )
         ],
       ),
-          );
+    );
   }
 }
+
+
+ 
