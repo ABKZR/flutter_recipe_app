@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Home Page',
           style: kTextStyle(fontSize: 20,color: Colors.white),
@@ -74,7 +75,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                     child: IconButton(
                       onPressed: () {
-
                         name!.trim() !=null?
                         Navigator.push(
                             context,

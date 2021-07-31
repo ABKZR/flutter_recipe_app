@@ -4,7 +4,6 @@ import 'package:flutter_recipe_app/constant.dart';
 import 'package:flutter_recipe_app/model/recipe_model.dart';
 import 'package:flutter_recipe_app/widgets/custom_row_listview_widget.dart';
 import 'package:flutter_recipe_app/widgets/nutrients_reuseable_column.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class RecipeDetails extends StatelessWidget {
   RecipeDetails({Key? key, required this.recipe, required this.index})

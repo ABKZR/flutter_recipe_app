@@ -10,6 +10,7 @@ class HeroCarouselCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        
         Navigator.push(
             context,
             MaterialPageRoute(
