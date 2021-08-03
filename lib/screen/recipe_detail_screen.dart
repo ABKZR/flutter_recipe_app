@@ -6,7 +6,6 @@ import 'package:flutter_recipe_app/widgets/custom_row_listview_widget.dart';
 import 'package:flutter_recipe_app/widgets/nutrients_reuseable_column.dart';
 import 'package:simple_url_preview/simple_url_preview.dart';
 import 'package:url_launcher/link.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RecipeDetails extends StatelessWidget {
   RecipeDetails({Key? key, required this.recipe, required this.index})
@@ -17,12 +16,12 @@ class RecipeDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     int num = recipe.hits![index]!.recipe!.ingredientLines!.length;
     var nutData = recipe.hits![index]!.recipe!.totalNutrients!;
-var _url = recipe.hits![index]!.recipe!.url!; 
+    var _url = recipe.hits![index]!.recipe!.url!;
 //  void _launchURL() async {
 //     await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
 //     // ignore: unused_label
 //     target: LinkTarget.self;
-    
+
 //     }
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -191,32 +190,37 @@ var _url = recipe.hits![index]!.recipe!.url!;
                     lst: recipe.hits![index]!.recipe!.dietLabels!,
                     title: 'Diets:',
                   ),
+                  Divider(),
+                  Text(
+                    'For Direction Visit...',
+                    style: kTextStyleRecipeDetails.copyWith(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   Link(
                     uri: Uri.parse(_url),
-                     target: LinkTarget.self,
-                    builder: (context,followLink){
+                    target: LinkTarget.self,
+                    builder: (context, followLink) {
                       return SimpleUrlPreview(
-                      url: Uri.decodeFull(recipe.hits![index]!.recipe!.url!) ,
-                      previewHeight: 200,
-                       onTap:  followLink,
-                      previewContainerPadding: EdgeInsets.all(10),
-                      bgColor: Colors.white,
-                      titleStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor.withOpacity(1),
-                      ),
-                      descriptionStyle: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      siteNameStyle: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    );
+                        url: Uri.decodeFull(recipe.hits![index]!.recipe!.url!),
+                        previewHeight: 200,
+                        onTap: followLink,
+                        previewContainerPadding: EdgeInsets.all(10),
+                        bgColor: Colors.white,
+                        titleStyle: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor.withOpacity(1),
+                        ),
+                        descriptionStyle: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        siteNameStyle: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      );
                     },
-                    
                   ),
                 ],
               ),
@@ -227,6 +231,3 @@ var _url = recipe.hits![index]!.recipe!.url!;
     );
   }
 }
-
-
- 
